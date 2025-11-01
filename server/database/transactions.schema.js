@@ -22,8 +22,15 @@ const transactionSchema = new mongoose.Schema({
         type: String,
         required: [ true, 'Transaction description is required' ]
 
-    }   
-});
+    }   ,
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+        },
+        
+
+}, { timestamps: true });
 
 export const Transaction = mongoose.model('Transaction', transactionSchema, 'transactions');
 

@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
         required: [ true, 'User email is required' ],
         unique: true
     },
-   profilePicture: {
+   avatar: {
         type: String,
         required: false
     },
@@ -19,8 +19,8 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    // reference to transactions
-    transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }]
+   
+   
 });
 
-export const User = mongoose.model('User', userSchema, 'users');
+export const User = mongoose.model('User', userSchema);
