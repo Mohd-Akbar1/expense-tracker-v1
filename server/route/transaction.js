@@ -3,8 +3,9 @@ import {
   getTransactions,
   createTransaction,
   updateTransaction,
-  deleteTransaction,
+  deleteTransaction,filterTransactions,downloadTransactions
 } from '../controller/transaction.controller.js';
+import { protect } from '../middleware/AuthMiddleware.js';
 
 const router = expres.Router();
 
@@ -14,9 +15,22 @@ router.get('/google-login', (req, res) => {
   res.send('Google login route');
 });
 
+// CRUD routes for transactions with protection middleware
+router
+  .route('/transactions')
+  .get(protect, getTransactions)
+  .post(protect, createTransaction);
 
-// transaction routes for CRUD operations
-router.route('/transactions').get(getTransactions).post(createTransaction);
-router.route('/transactions/:id').put(updateTransaction).delete(deleteTransaction);
+router
+  .route('/transactions/:id')
+  .put(protect, updateTransaction)
+  .delete(protect, deleteTransaction);
 
-export default router
+router.route('/transactions/download').get(protect, downloadTransactions);
+
+
+
+ //filter transactions
+router.route('/transactions/filter').get(protect,filterTransactions);
+
+export default router;
