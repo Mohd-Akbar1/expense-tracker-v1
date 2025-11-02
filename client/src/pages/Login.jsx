@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
 import { Home, TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-import ChartAreaGradient from "./HomeChart";
 import ExpenseChart from "./HomeChart";
 
 const Login = () => {
   useEffect(() => {
-    // Check if redirected from backend with token
+    
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
 
@@ -21,59 +19,58 @@ const Login = () => {
   };
 
   return (
-    // <div className="flex h-screen items-center justify-center bg-gray-100">
-    //   <div className="p-8 bg-white shadow-2xl rounded-2xl text-center">
-    //     <h1 className="text-3xl font-bold mb-6 text-gray-700">
-    //       Expense Tracker Login
-    //     </h1>
-    //     <button
-    //       onClick={handleGoogleLogin}
-    //       className="flex items-center justify-center gap-3 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 mx-auto"
-    //     >
-    //       <img
-    //         src="https://developers.google.com/identity/images/g-logo.png"
-    //         alt="Google"
-    //         className="w-6 h-6"
-    //       />
-    //       <span>Sign in with Google</span>
-    //     </button>
-    //   </div>
-    // </div>
-    <div>
-      {/* header */}
-      <div>
+    <div className="flex flex-col min-h-screen">
+      {/* Header */}
+      <div className="flex  justify-between items-center p-4 border-b">
         <p
-          className="text-xl font-thin py-4 mx-3  text-gray-700"
+          className="text-xl md:text-2xl font-thin py-4 mx-3 text-gray-700 text-center md:text-left"
           style={{ fontFamily: "monospace" }}
         >
-          {" "}
           Expense Tracker
         </p>
-        <hr className=" text-gray-200" />
+       
+        <hr className="text-gray-200" />
       </div>
 
-      {/* main Section */}
-      <div className="flex min-h-[70vh]">
-        <div className="w-1/2  flex flex-col justify-center m-2 items-center  border-gray-200 bg-[url('/src/assets/humans.png')] bg-contain bg-no-repeat bg-center ">
-          <div>
-            <p className="text-5xl font-semibold text-gray-500">Smarter</p>
-            <p className="text-5xl font-semibold text-gray-500">Finance,</p>
-            <p className="text-5xl font-semibold text-gray-500">
+      {/* Main Section */}
+      <div className="flex flex-col md:flex-row flex-1 min-h-[70vh]">
+        {/* Left Section */}
+        <div className="w-full md:w-1/2 flex flex-col justify-center m-4 items-center bg-[url('/src/assets/humans.png')] bg-contain bg-no-repeat bg-center">
+          <div className="text-center md:text-left max-w-md">
+            <p className="text-4xl md:text-5xl font-semibold text-gray-500">
+              Smarter
+            </p>
+            <p className="text-4xl md:text-5xl font-semibold text-gray-500">
+              Finance,
+            </p>
+            <p className="text-4xl md:text-5xl font-semibold text-gray-500">
               made <span className="text-blue-700">Easy</span>
             </p>
 
-            <p>
-              start tracking your expenses, setting budgets and achieving your
-              financial goals with ease
+            <p className="text-sm md:text-base mt-4 text-gray-600 leading-relaxed">
+              Start tracking your expenses, setting budgets, and achieving your
+              financial goals with ease.
             </p>
 
-            <button className="rounded-md border shadow-md cursor-pointer  px-7 py-1 my-2 flex items-center gap-2 hover:bg-gray-100 transition" onClick={handleGoogleLogin} >
-              <img src="./src/assets/googlel.png" alt="" className="w-5 h-5" /> <span className="text-xl">Login</span>
+            <button
+              onClick={handleGoogleLogin}
+              className="rounded-md border shadow-md cursor-pointer px-6 py-2 mt-4 flex items-center gap-2 hover:bg-gray-100 transition mx-auto md:mx-0"
+            >
+              <img
+                src="./src/assets/googlel.png"
+                alt="Google login"
+                className="w-5 h-5"
+              />{" "}
+              <span className="text-lg md:text-xl">Login</span>
             </button>
           </div>
         </div>
-        <div className="w-1/2  flex flex-col justify-center m-2 items-center  border-gray-200">
-          <ExpenseChart />
+
+        {/* Right Section */}
+        <div className="w-full md:w-1/2 flex flex-col justify-center m-4 items-start">
+          <div className="w-full max-w-lg">
+            <ExpenseChart />
+          </div>
         </div>
       </div>
     </div>

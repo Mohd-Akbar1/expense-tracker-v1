@@ -10,7 +10,7 @@ import {
 import { TrendingUp } from "lucide-react";
 
 // Sample data
-const chartData = [
+const chartDataHome = [
   { month: "January", income: 4000, expense: 2400 },
   { month: "February", income: 3000, expense: 1398 },
   { month: "March", income: 2000, expense: 9800 },
@@ -19,10 +19,28 @@ const chartData = [
   { month: "June", income: 2390, expense: 3800 },
 ];
 
-const ExpenseChart = () => {
+const ExpenseChart = ({transactions}) => {
+
+   const monthNames = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
+  ];
+
+  const monthlyData = transactions && transactions.reduce((acc, item) => {
+    const date = new Date(item.date);
+    const month = monthNames[date.getMonth()];
+    if (!acc[month]) acc[month] = { month, income: 0, expense: 0 };
+
+    if (item.type === "Income") acc[month].income += item.amount;
+    else acc[month].expense += item.amount;
+
+    return acc;
+  }, {});
+
+  const chartData = transactions && Object.values(monthlyData);
   return (
-    <div className="w-full p-6 mx-auto bg-white rounded-2xl ">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+    <div className={`w-full ${transactions ? "p-0" : "p-1"} mx-auto bg-white rounded-2xl `}>
+      {!transactions && <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between ">
         <div>
           <h2 className="text-2xl font-bold text-gray-800">
             Expense & Income Overview
@@ -35,12 +53,15 @@ const ExpenseChart = () => {
           <TrendingUp className="w-5 h-5" />
           +5.2% this month
         </div>
-      </div>
+      </div>}
 
-      <ResponsiveContainer width="100%" height={320}>
+              {chartData?.length === 0 && transactions && <p className="text-center text-gray-500 flex justify-center items-center h-[150px]">No expense categories to display.</p>}
+
+
+     {(chartData?.length > 0 || (!transactions && chartDataHome.length > 0)) && <ResponsiveContainer width="100%" height={transactions ? 200 : 320}>
         <AreaChart
-          data={chartData}
-          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          data={transactions ? chartData : chartDataHome}
+          margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
         >
           <defs>
             <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
@@ -69,7 +90,7 @@ const ExpenseChart = () => {
           <Area
             type="monotone"
             dataKey="income"
-            stroke="#10b981"
+            stroke="blue"
             fill="url(#colorIncome)"
             strokeWidth={3}
             name="Income"
@@ -83,7 +104,7 @@ const ExpenseChart = () => {
             name="Expense"
           />
         </AreaChart>
-      </ResponsiveContainer>
+      </ResponsiveContainer>}
     </div>
   );
 };
