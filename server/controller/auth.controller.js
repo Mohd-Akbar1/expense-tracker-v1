@@ -19,8 +19,8 @@ export const googleLoginSuccess = async (req, res) => {
 
   const token = generateToken(req.user);
   res.cookie("token", token, { httpOnly: true, secure: false });
-  //  res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}`)
-   res.redirect(`${process.env.CLIENT_URL}/dashboard?token=${token}`);
+  res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}`);
+  
 
 
 };
