@@ -6,9 +6,12 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import AuthHandler from "./pages/AuthHandler";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
+ <>
+    <Toaster position="top-right" reverseOrder={false} />
     <Routes>
       <Route path="/" element={<Login />} />
       
@@ -26,6 +29,7 @@ function App() {
         }
       />
     </Routes>
+ </>
   );
 }
 

@@ -15,7 +15,7 @@ const Login = () => {
   }, []);
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:8000/api/auth/google";
+    window.location.href = "https://expense-tracker-v1-zthq.onrender.com/api/auth/google";
   };
 
   return (
@@ -35,8 +35,8 @@ const Login = () => {
       {/* Main Section */}
       <div className="flex flex-col md:flex-row flex-1 min-h-[70vh]">
         {/* Left Section */}
-        <div className="w-full md:w-1/2 flex flex-col justify-center m-4 items-center bg-[url('/src/assets/humans.png')] bg-contain bg-no-repeat bg-center">
-          <div className="text-center md:text-left max-w-md">
+        <div className="w-full  md:w-1/2 flex flex-col justify-center m-4 items-center bg-[url('/src/assets/humans.png')] bg-contain bg-no-repeat bg-center">
+          <div className="text-start md:text-left max-w-md">
             <p className="text-4xl md:text-5xl font-semibold text-gray-500">
               Smarter
             </p>

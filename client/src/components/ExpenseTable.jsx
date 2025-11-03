@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SlidersHorizontal, Download, X, Trash2, UserRoundPen } from "lucide-react";
 import axios from "axios";
+import { fetchTransactions, setTransactions, removeTransaction } from "../reduxStore/slices/transactions";
+import { useSelector,useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 
-export default function ExpenseTable({ transactions, onFilter, onClearFilter, user }) {
+export default function ExpenseTable({ onFilter, onClearFilter, user }) {
   const [showFilter, setShowFilter] = useState(false);
   const [filterType, setFilterType] = useState("category");
   const [category, setCategory] = useState("");
@@ -14,12 +17,22 @@ export default function ExpenseTable({ transactions, onFilter, onClearFilter, us
 
 
   // Update modal states
+  const dispatch = useDispatch();
+  
  
   const [editId, setEditId] = useState(null);
   const [amount, setAmount] = useState("");
   const [editCategory, setEditCategory] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
+
+ useEffect(() => {
+  dispatch(fetchTransactions());
+}, [dispatch]);
+
+
+
+   const { transactions, loading: txLoading, error: txError } = useSelector((state) => state.transactions);
 
     const handleEdit = (transaction, index) => {
     setEditId(transaction._id);
@@ -66,7 +79,7 @@ export default function ExpenseTable({ transactions, onFilter, onClearFilter, us
     }
 
     try {
-      const res = await axios.get("http://localhost:8000/api/transactions/download", {
+      const res = await axios.get("https://expense-tracker-v1-zthq.onrender.com/api/transactions/download", {
         params: {
           
           from: fromDate,
@@ -96,16 +109,19 @@ export default function ExpenseTable({ transactions, onFilter, onClearFilter, us
 
 
   // Delete transaction
-  const handleDelete = async (id) => {
+  const handleDelete = async (id,idx) => {
     console.log("Delete transaction with id:", id);
     try {
-      await axios.delete(`http://localhost:8000/api/transactions/${id}`, {
+      await axios.delete(`https://expense-tracker-v1-zthq.onrender.com/api/transactions/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      // alert("Transaction deleted successfully.");
-      window.location.reload();
+     
+     dispatch(removeTransaction(id));
+     toast.success("Transaction deleted successfully");
+
+
     } catch (err) {
       console.error(err);
       alert("Error deleting transaction. Please try again.");
@@ -114,7 +130,7 @@ export default function ExpenseTable({ transactions, onFilter, onClearFilter, us
  const handleConfirmUpdate = async () => {
     try {
       await axios.put(
-        `http://localhost:8000/api/transactions/${editId}`,
+        `https://expense-tracker-v1-zthq.onrender.com/api/transactions/${editId}`,
         {
           amount,
           category: editCategory,
@@ -129,7 +145,8 @@ export default function ExpenseTable({ transactions, onFilter, onClearFilter, us
       );
      
       setUpdateTransaction(false);
-      window.location.reload();
+      toast.success("Transaction updated successfully");
+      dispatch(fetchTransactions());
     } catch (err) {
       console.error(err);
       alert("Error updating transaction. Please try again.");
@@ -386,7 +403,7 @@ export default function ExpenseTable({ transactions, onFilter, onClearFilter, us
               <td>{t.description}</td>
               <td>{t.date}</td>
               <td className="flex gap-2">
-                <Trash2 className="cursor-pointer text-red-600 text-sm" onClick={() => handleDelete(t._id)} size={(16)} /> <UserRoundPen className="cursor-pointer" onClick={() => handleEdit(t,i)}  size={(16)} />
+                <Trash2 className="cursor-pointer text-red-600 text-sm" onClick={() => handleDelete(t._id,t.i)} size={(16)} /> <UserRoundPen className="cursor-pointer" onClick={() => handleEdit(t,i)}  size={(16)} />
               </td>
             </tr>
           ))}

@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss(),],
   server: {
     proxy: {
-      '/api': 'http://localhost:8000',
+      '/api': 'https://expense-tracker-v1-zthq.onrender.com/',
     },
   },
 })

@@ -2,11 +2,24 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, ResponsiveCo
 import ExpenseChart from "../pages/HomeChart.jsx";
 import { Tag } from 'lucide-react';
 import { Calendar } from 'lucide-react';
+import { fetchTransactions } from "../reduxStore/slices/transactions.js";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 
 const COLORS = ["#6366F1", "#10B981", "#F43F5E", "#F59E0B", "#3B82F6", "#8B5CF6"];
 
-export default function ChartsSection({ transactions }) {
+export default function ChartsSection() {
+
+    useEffect(() => {
+      
+      fetchTransactions();
+    }, []);
+  
+  
+     const { transactions, loading: txLoading, error: txError } = useSelector((state) => state.transactions);
+
+
 
  const expenseTransactions = transactions.filter(t => t.type === "Expense");
 

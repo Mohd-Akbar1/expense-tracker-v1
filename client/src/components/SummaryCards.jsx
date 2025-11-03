@@ -1,5 +1,10 @@
 import { CirclePlus } from 'lucide-react';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import React from 'react';
+// redux
+import { useDispatch } from 'react-redux';
+
 
 export default function SummaryCards({ income, expense ,onTransactionAdded  }) {
   const [transactions, setTransactions] = useState(false);
@@ -10,6 +15,8 @@ export default function SummaryCards({ income, expense ,onTransactionAdded  }) {
     description: "",
     date: "",
   });
+
+  const dispatch = useDispatch();
 
   const toggleForm = (e) => {
     if (e?.target?.id === "modal-overlay") {
@@ -46,7 +53,7 @@ export default function SummaryCards({ income, expense ,onTransactionAdded  }) {
     };
 
     try {
-      const res = await fetch("http://localhost:8000/api/transactions", {
+      const res = await fetch("https://expense-tracker-v1-zthq.onrender.com/api/transactions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,9 +64,11 @@ export default function SummaryCards({ income, expense ,onTransactionAdded  }) {
 
       const data = await res.json();
       if (res.ok) {
-        alert("Transaction added successfully!");
+        
+        toast.success("Transaction added successfully!");
         console.log(data);
-      onTransactionAdded();
+    onTransactionAdded();
+
 
 
        
@@ -85,20 +94,35 @@ export default function SummaryCards({ income, expense ,onTransactionAdded  }) {
 
   return (
     <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 mt-6 mx-2">
-      {/* Account Balance */}
-      <div className="bg-linear-to-b from-white-500 border border-gray-200 to-gray-100 rounded-sm m-1 bg-white p-5">
-        <p className="text-gray-500 text-[12px] font-semibold">
-          Account Balance
-        </p>
-        <p className="text-xl font-semibold mt-2">₹{(income - expense).toFixed(2)}</p>
-      </div>
+    {/* Account Balance */}
+<div className="relative bg-white border border-gray-200 rounded-sm m-1 p-5 shadow-sm">
+  {/* Blinking red dot only when balance is negative */}
+  {(income - expense) < 0 && (
+    <span className="absolute -top-1 -right-1 flex">
+      <span className="absolute inline-flex h-3 w-3 animate-ping rounded-full bg-red-500 opacity-75"></span>
+      <span className="relative inline-flex h-3 w-3 rounded-full bg-red-600"></span>
+    </span>
+  )}
+
+  <p className="text-gray-500 text-[12px] font-semibold">
+    Account Balance
+  </p>
+  <p
+    className={`text-xl font-semibold mt-2 ${
+      (income - expense) < 0 ? "text-red-600" : "text-blue-600"
+    }`}
+  >
+    ₹{(income - expense).toFixed(2)}
+  </p>
+</div>
+
 
       {/* Monthly Income */}
       <div className="bg-linear-to-b from-white-500 border border-gray-200 to-gray-100 rounded-sm m-1 bg-white p-5">
         <p className="text-gray-500 text-[12px] font-semibold">
           Monthly Income
         </p>
-        <p className="text-xl font-semibold mt-2">₹{(income.toFixed(2))}</p>
+        <p className="text-xl text-green-600 font-semibold mt-2">₹{(income.toFixed(2))}</p>
       </div>
 
       {/* Total Expenses */}
