@@ -96,7 +96,7 @@ export default function Dashboard() {
   
   if (userLoading || txLoading)
     return (
-      <img src="./src/assets/loading.gif" alt="loading" className="mx-auto mt-20" />
+      <img src="/loading.gif" alt="loading" className="mx-auto mt-20" />
     );
 
   return (

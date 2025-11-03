@@ -19,6 +19,6 @@ export default function AuthHandler() {
     }
   }, [location, navigate]);
 
-  return <img src="./src/assets/loading.gif" alt="loading" className="mx-auto mt-20" />;
+  return <img src="/loading.gif" alt="loading" className="mx-auto mt-20" />;
     
 }
