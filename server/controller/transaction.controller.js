@@ -2,7 +2,7 @@ import { Transaction } from "../database/transactions.schema.js";
 import { Parser } from "json2csv"; 
 export const getTransactions = async(req, res) => {
   try {
-    const transactions = (await Transaction.find({ userId: req.user._id })).sort({ date: -1 });
+    const transactions = (await Transaction.find({ userId: req.user._id }).sort({ date: -1 }));
     res.json(transactions);
   } catch (error) {
     console.error('Error fetching transactions:', error);
