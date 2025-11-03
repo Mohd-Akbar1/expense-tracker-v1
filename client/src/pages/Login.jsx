@@ -57,7 +57,7 @@ const Login = () => {
               className="rounded-md border shadow-md cursor-pointer px-6 py-2 mt-4 flex items-center gap-2 hover:bg-gray-100 transition mx-auto md:mx-0"
             >
               <img
-                src="./src/assets/googlel.png"
+                src="/googlel.png"
                 alt="Google login"
                 className="w-5 h-5"
               />{" "}
